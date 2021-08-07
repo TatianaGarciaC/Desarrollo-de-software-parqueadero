@@ -269,6 +269,13 @@ public class Parqueadero {
      */
     public void avanzarHora() {
         horaActual++;
+        if(horaActual >= HORA_CIERRE) {
+        	abierto = false;
+        	//Reinicio de dia cada 24 horas
+        	if(horaActual>24) {
+        		horaActual = 1;
+        	}
+        }
     }
 
     /**
