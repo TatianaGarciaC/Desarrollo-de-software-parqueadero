@@ -10,6 +10,8 @@
  */
 package universidadean.parqueadero.mundo;
 
+import universidadean.parqueadero.interfaz.PlacaHorasDTO;
+
 /**
  * Esta clase representa un parqueadero con TAMANO puestos.
  */
@@ -312,21 +314,58 @@ public class Parqueadero {
     // -----------------------------------------------------------------
 
     /**
-     * Método de extensión 1.
+     * Método encargado de obtener el carro con mayor tiempo en el parqueadero
      *
-     * @return Respuesta 1.
+     * @return placa del carro con mas horas en el parqueadero.
      */
     public String metodo1() {
-        return "respuesta 1";
+    	
+    	//declaracion DTO que almacenara los datos del carro
+    	PlacaHorasDTO carroMaxHrs = new PlacaHorasDTO();
+    	carroMaxHrs.setNumHrs(0);
+    	carroMaxHrs.setPlaca("");
+    	
+    	/*Se recorren los puestos y el que este en estado ocupado 
+    	valida el carro por tiempo Hrs en el parqueadero*/
+    	for (Puesto puesto : puestos) {
+            if (puesto.estaOcupado()) {
+            	 Carro carro = puestos[puesto.darNumeroPuesto()].darCarro();
+            	if(carro.darTiempoEnParqueadero(horaActual) > carroMaxHrs.getNumHrs()) {
+            		carroMaxHrs.setNumHrs(carro.darTiempoEnParqueadero(horaActual));
+            		carroMaxHrs.setPlaca(carro.darPlaca());
+                    puesto.darCarro().darPlaca();
+            	}
+            }
+        }
+    	 
+    	//Imprimir respuesta en pantalla
+    	if (carroMaxHrs.getPlaca()!="") {
+    		return "La placa del carro con más tiempo en el parqueadero es: "
+        			+ carroMaxHrs.getPlaca() + " lleva " + carroMaxHrs.getNumHrs() 
+        			+ "hrs en el parquedero";
+    	} else {
+    		return "No hay ningun carro registrado";
+    		}
     }
+    
 
     /**
-     * Método de extensión 2.
+     * Método encargado de validar la disponibilidad de espacios en el parquedero.
      *
-     * @return Respuesta 2.
+     * @return estado de disponibilidad del parqueadero.
      */
     public String metodo2() {
-        return "respuesta 2";
+    	
+    	//Obtiene la cantidad de puestos libres
+    	Integer disponibilidad = buscarPuestoLibre();
+    	
+    	//valida si es diferente a -1 hay puestos disponibles
+    	if(disponibilidad != null && disponibilidad == -1) {
+    		 return "El parquedero esta lleno";
+    	}else {
+    		 return "Hay puestos disponibles";
+    	}
+       
     }
 
 }
